@@ -1,3 +1,0 @@
-Items_IT = {
-DisplayName_TowBar = "Barra di traino"
-}

@@ -1,3 +1,0 @@
-ItemName_RU = {
-ItemName_TowingCar.TowBar = "Жесткая сцепка"
-}

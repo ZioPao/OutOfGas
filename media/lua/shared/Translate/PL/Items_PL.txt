@@ -1,3 +1,0 @@
-Items_PL = {
-DisplayName_TowBar = "Hak holowniczy"
-}

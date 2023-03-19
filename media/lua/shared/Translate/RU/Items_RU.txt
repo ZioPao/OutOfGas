@@ -1,3 +1,0 @@
-Items_RU = {
-DisplayName_TowBar = "Жесткая сцепка"
-}

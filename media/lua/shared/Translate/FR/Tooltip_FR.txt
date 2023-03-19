@@ -1,3 +1,0 @@
-Tooltip_FR = {
-Tooltip_TowBar_TowingCar = "Une barre de remorquage<br>pour remorquer des vehicules."
-}

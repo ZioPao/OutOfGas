@@ -1,3 +1,0 @@
-Tooltip_ES = {
-Tooltip_TowBar_TowingCar = "Un enganche de remolque se puede utilizar<br>para enganchar un vehículo como un remolque"
-}

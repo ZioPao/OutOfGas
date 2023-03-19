@@ -1,3 +1,0 @@
-ItemName_DE = {
-ItemName_TowingCar.TowBar = "Abschleppstange"
-}

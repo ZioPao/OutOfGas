@@ -1,3 +1,0 @@
-Items_FR = {
-DisplayName_TowBar = "Barre de remorquage"
-}

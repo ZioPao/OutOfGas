@@ -1,3 +1,0 @@
-Tooltip_DE = {
-Tooltip_TowBar_TowingCar = "Eine Abschleppstange wird benutzt um ein Fahrzeug wie einen Anhänger abzuschleppen"
-}
