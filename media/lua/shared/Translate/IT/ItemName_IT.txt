@@ -1,0 +1,3 @@
+ItemName_IT = {
+ItemName_TowingCar.TowBar = "Barra di traino"
+}

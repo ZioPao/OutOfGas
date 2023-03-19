@@ -1,0 +1,3 @@
+Items_CN = {
+ItemName_TowingCar.TowBar = "拖车牵引杆"
+}

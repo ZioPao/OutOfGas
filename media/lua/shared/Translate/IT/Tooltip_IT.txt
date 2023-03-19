@@ -1,0 +1,3 @@
+Tooltip_IT = {
+Tooltip_TowBar_TowingCar = "Una barra di traino può essere<br>utilizzata per rimorchiare veicoli"
+}

@@ -1,0 +1,17 @@
+UI_RU = {
+UI_Text_Towing_turnOffParkingBrake = "Снять с ручного тормоза",
+UI_Text_Towing_turnOnParkingBrake = "Поставить на ручной тормоз",
+UI_Text_Towing_noAviableVehicles = "Нет авто для буксировки<br>или не может прицепить",
+UI_Text_Towing_attach = "Прицепить",
+UI_Text_Towing_deattach = "Отцепить",
+UI_Text_Towing_byRope = "буксировочным тросом",
+UI_Text_Towing_byTowBar = "жесткой сцепкой",
+UI_Text_Towing_byHook = "крюком",
+UI_Text_Towing_flipUpright = "Перевернуть авто",
+
+UI_Text_PushByHands = "Толкнуть авто",
+UI_Text_PushByHands_Left = "Слева",
+UI_Text_PushByHands_Right = "Справа",
+UI_Text_PushByHands_Front = "Спереди",
+UI_Text_PushByHands_Behind = "Сзади",
+}

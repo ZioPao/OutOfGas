@@ -1,0 +1,16 @@
+UI_CN = {
+UI_Text_Towing_turnOffParkingBrake = "关闭 停车制动器",
+UI_Text_Towing_turnOnParkingBrake = "打开 停车制动器",
+UI_Text_Towing_noAviableVehicles = "没有可供牵引的车辆<br>(或无法牵引)",
+UI_Text_Towing_attach = "附加",
+UI_Text_Towing_deattach = "解除连接",
+UI_Text_Towing_byRope = "通过绳索连接",
+UI_Text_Towing_byTowBar = "通过拖车牵引杆连接",
+UI_Text_Towing_byHook = "通过挂钩连接",
+UI_Text_Towing_flipUpright = "垂直翻转",
+UI_Text_PushByHands = "用手推车",
+UI_Text_PushByHands_Left = "从左向右推",
+UI_Text_PushByHands_Right = "从右向左推",
+UI_Text_PushByHands_Front = "从前向后推",
+UI_Text_PushByHands_Behind = "从后向前推",
+}

@@ -1,0 +1,3 @@
+Tooltip_PL = {
+Tooltip_TowBar_TowingCar = "Za pomoc¹ haka mo¿na holowaæ<br>samochody niczym przyczepy"
+}

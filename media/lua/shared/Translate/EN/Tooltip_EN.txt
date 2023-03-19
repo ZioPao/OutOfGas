@@ -1,0 +1,3 @@
+Tooltip_EN = {
+Tooltip_TowBar_TowingCar = "A tow bar can be used<br>to tow vehicles like a trailer"
+}

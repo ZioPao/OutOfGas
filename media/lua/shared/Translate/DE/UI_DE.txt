@@ -1,0 +1,11 @@
+UI_DE = {
+UI_Text_Towing_turnOffParkingBrake = "Feststellbremse lösen",
+UI_Text_Towing_turnOnParkingBrake = "Feststellbremse einlegen",
+UI_Text_Towing_noAviableVehicles = "Keine Fahrzeuge zum verbinden oder nicht möglich",
+UI_Text_Towing_attach = "Verbinde",
+UI_Text_Towing_deattach = "Trenne",
+UI_Text_Towing_byRope = "mit einem Abschleppseil",
+UI_Text_Towing_byTowBar = "mit einer Abschleppstange",
+UI_Text_Towing_byHook = "mit dem Abschlepphaken",
+UI_Text_Towing_flipUpright = "Gerade drehen"
+}

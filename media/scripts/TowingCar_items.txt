@@ -1,0 +1,19 @@
+module TowingCar
+{
+	imports
+	{
+		Base
+	}
+
+/*******************Towing Car*******************/
+	item TowBar
+	{
+		Weight = 20.0,
+		Type = Normal,
+		DisplayName = Tow Bar,
+		Icon = TowBar,
+		Tooltip = Tooltip_TowBar_TowingCar,
+		StaticModel = towbarModel,
+		WorldStaticModel = towbarModel,
+	}
+}

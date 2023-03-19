@@ -1,0 +1,18 @@
+UI_EN = {
+UI_Text_Towing_turnOffParkingBrake = "Turn off parking brake",
+UI_Text_Towing_turnOnParkingBrake = "Turn on parking brake",
+UI_Text_Towing_noAviableVehicles = "No vehicles for attach<br>or can't attach",
+UI_Text_Towing_attach = "Attach",
+UI_Text_Towing_deattach = "Deattach",
+UI_Text_Towing_byRope = "by rope",
+UI_Text_Towing_byTowBar = "by tow bar",
+UI_Text_Towing_byHook = "by hook",
+UI_Text_Towing_flipUpright = "Flip upright",
+
+UI_Text_PushByHands = "Push vehicle",
+UI_Text_PushByHands_Left = "Left",
+UI_Text_PushByHands_Right = "Right",
+UI_Text_PushByHands_Front = "Front",
+UI_Text_PushByHands_Behind = "Behind",
+
+}
