@@ -65,6 +65,7 @@
         "timer",
         "SendCommandToServer",
         "getModFileReader",
-        "getTextOrNull"
+        "getTextOrNull",
+        "Vector3f"
     ]
 }
