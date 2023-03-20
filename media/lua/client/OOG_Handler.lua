@@ -8,9 +8,43 @@ function OOG_Handler.UpdateVehiclePosition()
     if OOG_Handler.currentHandler.player:isAiming() then
         Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
     end
+
+
+    -- Check distance between og point of the car and player
+    local pushPoint = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, TowCarMod.Utils.tempVector1)
+    --local playerPoint = OOG_Handler.currentHandler.player:getPosition(TowCarMod.Utils.playerVector)
+    
+    -- print("_______CAR______________")
+    -- print(pushPoint:get(0))
+    -- print(pushPoint:get(2))
+    -- print("_________PLAYER_____________")
+    -- print(OOG_Handler.currentHandler.player:getX())
+    -- print(OOG_Handler.currentHandler.player:getZ())
+
+
+
+    local plX = OOG_Handler.currentHandler.player:getX()
+    local plY = OOG_Handler.currentHandler.player:getY()
+    local vehX = pushPoint:get(0)
+    local vehY = pushPoint:get(1)
+
+    if math.abs(math.abs(plX) - math.abs(vehX)) > 0.5 then
+        print("X")
+        print(math.abs(math.abs(plX) - math.abs(vehX)))
+        return
+    end
+
+
+    if math.abs(math.abs(plY) - math.abs(vehY)) > 0.5 then
+        print("Y")
+        print(math.abs(math.abs(plY) - math.abs(vehY)))
+        return
+    end
+
     if not OOG_Handler.currentHandler.player:isPlayerMoving() then return end
 
-    local forceCoeff = 10
+    -- Not too high 
+    local forceCoeff = 20
     local forceVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.fx, 0, OOG_Handler.currentHandler.fz, TowCarMod.Utils.tempVector1):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
     local pushPoint = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, TowCarMod.Utils.tempVector2):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
     pushPoint:set(pushPoint:x(), 0, pushPoint:y())

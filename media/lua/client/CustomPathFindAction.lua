@@ -61,7 +61,7 @@ function TACustomPathFind:pathToLocationF(character, targetX, targetY, targetZ)
 	o.stopOnWalk = false
 	o.stopOnRun = false
     o.maxTime = -1
-    
+
     o.maxTimeInOnePosition = 15
     o.currentTimeInOnePosition = 0
     o.lastX = -1
