@@ -1,7 +1,8 @@
+-- OUT OF GAS?
 
+-- Some code referenced from the Better Towing mod from Aiteron
 
 local function HandlePushOption(_, handler, direction)
-    
     handler:startPushingVehicle(direction)
 end
 
@@ -29,13 +30,8 @@ local function AddOptionPushVehicle(oogHandler, playerObj, context)
 end
 
 
--- Wrap the original function
-local defaultMenuOutsideVehicle
-if not defaultMenuOutsideVehicle then
-    defaultMenuOutsideVehicle = ISVehicleMenu.FillMenuOutsideVehicle
-end
 
--- Override the original function
+local defaultMenuOutsideVehicle = ISVehicleMenu.FillMenuOutsideVehicle
 function ISVehicleMenu.FillMenuOutsideVehicle(player, context, vehicle, test)
     defaultMenuOutsideVehicle(player, context, vehicle, test)
 
