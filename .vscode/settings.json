@@ -66,6 +66,8 @@
         "SendCommandToServer",
         "getModFileReader",
         "getTextOrNull",
-        "Vector3f"
+        "Vector3f",
+        "ISPathFindAction",
+        "ISVehicleMenu"
     ]
 }

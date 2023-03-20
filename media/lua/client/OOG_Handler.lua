@@ -1,19 +1,24 @@
 if not OOG_Handler then OOG_Handler = {} end
 
 OOG_Handler.currentHandler = nil
-OOG_Handler.vehicleFirstPushVector = Vector3f.new()
-OOG_Handler.vehicleSecondPushVector = Vector3f.new()
+OOG_Handler.vehicleFirstPushVector = nil
+OOG_Handler.vehicleSecondPushVector = nil
 
 
+
+function OOG_Handler.StartUpdateVehiclePosition()
+    
+
+    Events.OnTick.Add(OOG_Handler.UpdateVehiclePosition)
+end
 
 function OOG_Handler.UpdateVehiclePosition()
-
-    if OOG_Handler.currentHandler.player:isAiming() then
-        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
+    if not OOG_Handler.currentHandler.player:isPlayerMoving() then
+        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
+        return
     end
-
-    if not OOG_Handler.currentHandler.player:isPlayerMoving() then return end
-
+    OOG_Handler.currentHandler.player:setVariable("EmotePlaying", true)
+    OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
 
     -- Check distance between og point of the car and player
     local vehicleVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, OOG_Handler.vehicleFirstPushVector)
@@ -22,12 +27,18 @@ function OOG_Handler.UpdateVehiclePosition()
     local vehX = vehicleVector:get(0)
     local vehY = vehicleVector:get(1)
 
-    if math.abs(math.abs(plX) - math.abs(vehX)) > 0.5 and math.abs(math.abs(plY) - math.abs(vehY)) > 0.2 then
-        print("X")
-        print(math.abs(math.abs(plX) - math.abs(vehX)))
-        print("Y")
-        print(math.abs(math.abs(plY) - math.abs(vehY)))
+    -- print("X")
+    -- print(math.abs(math.abs(plX) - math.abs(vehX)))
+    -- print("Y")
+    -- print(math.abs(math.abs(plY) - math.abs(vehY)))
+    -- print("__________________")
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.7) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
 
+
+        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
+
+        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
+        OOG_Handler.currentHandler = nil
         return
     end
 
@@ -85,25 +96,19 @@ function OOG_Handler:startPushingVehicle(direction)
         self.fx = 1
     end
 
-    
 
-    if self.player then
-        print("Player is valid")
-    end
-
-
-    if self.vehicle then
-        print("Vehicle is valid")
-    end
+    OOG_Handler.vehicleFirstPushVector = Vector3f.new()
+    OOG_Handler.vehicleSecondPushVector = Vector3f.new()
 
     local pushPoint = self.vehicle:getWorldPos(self.x, 0, self.z, OOG_Handler.vehicleFirstPushVector)
-    ISTimedActionQueue.add(ISPathFindAction:pathToLocationF(self.player, pushPoint:x(), pushPoint:y(), pushPoint:z()))
-    --ISTimedActionQueue.add(TACustomPathFind:pathToLocationF(self.player, pushPoint:x(), pushPoint:y(), pushPoint:z()))
-
-
+    ISTimedActionQueue.add(ISPathFindAction:customPathToVehicle(self.player, pushPoint:x(), pushPoint:y(), pushPoint:z(), OOG_Handler.StartUpdateVehiclePosition))
 
 end
 
+function OOG_Handler.GetInstance()
+    return OOG_Handler.currentHandler
+
+end
 
 function OOG_Handler:new(player, vehicle)
     local o = {}

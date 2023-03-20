@@ -1,10 +1,8 @@
 
 
 local function HandlePushOption(_, handler, direction)
+    
     handler:startPushingVehicle(direction)
-
-    Events.OnTick.Add(handler.UpdateVehiclePosition)
-
 end
 
 
@@ -42,8 +40,12 @@ function ISVehicleMenu.FillMenuOutsideVehicle(player, context, vehicle, test)
     defaultMenuOutsideVehicle(player, context, vehicle, test)
 
     local playerObj = getSpecificPlayer(player)
-    local oogHandler = OOG_Handler:new(playerObj, vehicle)
 
-    AddOptionPushVehicle(oogHandler, playerObj, context)
+    local oogHandler = OOG_Handler.GetInstance()
+
+    if oogHandler == nil then
+        oogHandler = OOG_Handler:new(playerObj, vehicle)
+        AddOptionPushVehicle(oogHandler, playerObj, context)
+    end
 
 end
