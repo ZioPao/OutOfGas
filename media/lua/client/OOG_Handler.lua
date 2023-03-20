@@ -16,13 +16,13 @@ function OOG_Handler.UpdateVehiclePosition()
 
 
     -- Check distance between og point of the car and player
-    local vehicleVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, OOG_Handler.vehiclePushVector)
+    local vehicleVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, OOG_Handler.vehicleFirstPushVector)
     local plX = OOG_Handler.currentHandler.player:getX()
     local plY = OOG_Handler.currentHandler.player:getY()
     local vehX = vehicleVector:get(0)
     local vehY = vehicleVector:get(1)
 
-    if math.abs(math.abs(plX) - math.abs(vehX)) > 0.5 and math.abs(math.abs(plY) - math.abs(vehY)) > 0.5 then
+    if math.abs(math.abs(plX) - math.abs(vehX)) > 0.5 and math.abs(math.abs(plY) - math.abs(vehY)) > 0.2 then
         print("X")
         print(math.abs(math.abs(plX) - math.abs(vehX)))
         print("Y")
@@ -34,9 +34,9 @@ function OOG_Handler.UpdateVehiclePosition()
 
     -- Not too high 
     local forceCoeff = 20
-    local forceVector = vehicleVector:add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
-    
-    local pushPoint = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, TowCarMod.Utils.vehicleSecondPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
+    local forceVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.fx, 0, OOG_Handler.currentHandler.fz, OOG_Handler.vehicleFirstPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
+
+    local pushPoint = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, OOG_Handler.vehicleSecondPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
     pushPoint:set(pushPoint:x(), 0, pushPoint:y())
 
     local force = 0.5 + 0.1 * OOG_Handler.currentHandler.player:getPerkLevel(Perks.Strength)
@@ -96,14 +96,13 @@ function OOG_Handler:startPushingVehicle(direction)
         print("Vehicle is valid")
     end
 
-    local pushPoint = self.vehicle:getWorldPos(self.x, 0, self.z, OOG_Handler.vehiclePushVector)
+    local pushPoint = self.vehicle:getWorldPos(self.x, 0, self.z, OOG_Handler.vehicleFirstPushVector)
     ISTimedActionQueue.add(ISPathFindAction:pathToLocationF(self.player, pushPoint:x(), pushPoint:y(), pushPoint:z()))
     --ISTimedActionQueue.add(TACustomPathFind:pathToLocationF(self.player, pushPoint:x(), pushPoint:y(), pushPoint:z()))
 
 
 
 end
-
 
 
 function OOG_Handler:new(player, vehicle)
