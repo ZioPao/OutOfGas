@@ -1,3 +1,5 @@
+-- Aiteron's custom path finding
+
 require "TimedActions/ISBaseTimedAction"
 
 TACustomPathFind = ISBaseTimedAction:derive("TACustomPathFind")

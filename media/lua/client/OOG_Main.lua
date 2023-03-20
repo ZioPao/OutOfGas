@@ -1,7 +1,10 @@
 
 
-local function HandlePushOption(handler, direction)
+local function HandlePushOption(_, handler, direction)
     handler:startPushingVehicle(direction)
+
+    Events.OnTick.Add(handler.UpdateVehiclePosition)
+
 end
 
 
