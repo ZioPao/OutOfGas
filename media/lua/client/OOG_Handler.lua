@@ -38,6 +38,38 @@ function TestDirection()
 end
 
 
+local function SetDirection(behind, side)
+
+
+    if side then
+        OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
+        OOG_Handler.currentHandler.forceCoeff = 5
+    else
+        OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
+    end
+
+
+    if behind and not side then
+        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fz = 1
+    elseif not behind and not side then
+        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fz = -1
+    
+    elseif (behind and side == 'R') or (not behind and side =='L') then
+        print("Rotating 1")
+        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = -1
+    elseif (behind and side == 'L') or (not behind and side == 'R') then
+        print("Rotating 2")
+        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = 1
+    end
+end
+
+
 
 local function MapDirectionToValue(inputDirection, playerDir)
 
@@ -61,32 +93,22 @@ local function MapDirectionToValue(inputDirection, playerDir)
     if inputDirection == "BEHIND" then
         if flooredDir == -90 then
             print("N")
-            OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = 1
+            SetDirection(true, nil)
         elseif flooredDir == -46 then
             print("NE")
-            OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fx = -1
-            OOG_Handler.currentHandler.forceCoeff = 5
+            SetDirection(true, 'R')
         elseif flooredDir == 0 then
             print("E")
-            OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = 1
+            SetDirection(true, nil)
         elseif flooredDir == 45 then
             print("SE")
-            OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = 1
+            SetDirection(true, nil)
         elseif flooredDir == 89 then
             print("S")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = 1
+            SetDirection(true, nil)
         elseif flooredDir == 135 then
             print("SW")
-            OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-            OOG_Handler.currentHandler.z =  OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fx = 1
-            OOG_Handler.currentHandler.forceCoeff = 5
+            SetDirection(true, 'L')
         elseif flooredDir == -180 then
             print("W")
         elseif flooredDir == -135 then
@@ -95,40 +117,28 @@ local function MapDirectionToValue(inputDirection, playerDir)
     elseif inputDirection == "FRONT" then
         if flooredDir == -90 then
             print("N")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         elseif flooredDir == -46 then
             print("NE")
-            OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-            OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fx = 1
-            OOG_Handler.currentHandler.forceCoeff = 5
+            SetDirection(false, 'L')
         elseif flooredDir == 0 then
             print("E")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         elseif flooredDir == 45 then
             print("SE")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         elseif flooredDir == 89 then
             print("S")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         elseif flooredDir == 135 then
             print("SW")
-            OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fx = -1
-            OOG_Handler.currentHandler.forceCoeff = 5
+            SetDirection(false, 'R')
         elseif flooredDir == -180 then
             print("W")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         elseif flooredDir == -135 then
             print("NW")
-            OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-            OOG_Handler.currentHandler.fz = -1
+            SetDirection(false, nil)
         end
     end
 
@@ -151,7 +161,6 @@ function OOG_Handler.UpdateVehiclePosition()
         return
     end
     OOG_Handler.currentHandler.player:setVariable("EmotePlaying", true)
-    OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
 
 
 
