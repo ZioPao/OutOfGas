@@ -6,6 +6,37 @@ OOG_Handler.vehicleFirstPushVector = nil
 OOG_Handler.vehicleSecondPushVector = nil
 
 
+
+
+
+
+
+OOG_Handler.ManageKeys = function(key)
+
+    for _,bind in ipairs(OOG_Bindings) do
+        if key == getCore():getKey(bind.value) then
+
+
+            if bind.value == "OOG_LeftKey" then
+                
+            elseif bind.value == "OOG_RightKey" then
+
+            end
+        end
+             
+    end
+
+end
+
+
+
+
+
+
+-----------------------------------------
+
+
+
 local function SetDirectionY(behind, side)
 
 
@@ -33,7 +64,7 @@ local function SetDirectionY(behind, side)
         print("Rotating 2")
         OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
         OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = 1
+        OOG_Handler.currentHandler.fx = -1
     end
 end
 local function SetDirectionX(side)
@@ -178,9 +209,22 @@ end
 
 
 
+
+function OOG_Handler.RotateVehicle(side)
+
+    if side == 'R' then
+        print("Rotate R")
+    else
+        print("Rotate L")
+    end
+
+end
+
+
+
 function OOG_Handler.StartUpdateVehiclePosition()
     
-
+    Events.OnKeyPressed.Add(OOG_Bindings.ManageKeys)
     Events.OnTick.Add(OOG_Handler.UpdateVehiclePosition)
 end
 
@@ -188,6 +232,7 @@ function OOG_Handler.UpdateVehiclePosition()
 
     if OOG_Handler == nil then
         Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
+        Events.OnKeyPressed.Remove(OOG_Bindings.ManageKeys)
 
     end
 
@@ -211,12 +256,10 @@ function OOG_Handler.UpdateVehiclePosition()
     local vehY = vehicleVector:get(1)
 
 
-    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
-        return
-    end
 
 
-    if (math.abs(math.abs(plX) - math.abs(vehX)) > 1) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.7) then
+
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 3) or (math.abs(math.abs(plY) - math.abs(vehY)) > 3) then
         print("Stopping!")
         print("X")
         print(math.abs(math.abs(plX) - math.abs(vehX)))
@@ -225,11 +268,13 @@ function OOG_Handler.UpdateVehiclePosition()
         print("__________________")
         Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
         OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
-        --OOG_Handler.currentHandler = nil
+        Events.OnKeyPressed.Remove(OOG_Bindings.ManageKeys)
         return
     end
 
-
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
+        return
+    end
 
     local forceVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.fx, 0, OOG_Handler.currentHandler.fz, OOG_Handler.vehicleFirstPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
 
@@ -313,3 +358,6 @@ function OOG_Handler:new(player, vehicle)
 
     return o
 end
+
+
+
