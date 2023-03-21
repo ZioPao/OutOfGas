@@ -19,11 +19,10 @@ OOG_Handler.ManageKeys = function(key)
 
 
             if bind.value == "OOG_LeftKey" then
-                OOG_Handler.currentHandler.RotateVehicle('L')
+                OOG_Handler.RotateVehicle('L')
                 
             elseif bind.value == "OOG_RightKey" then
-                OOG_Handler.currentHandler.RotateVehicle('R')
-
+                OOG_Handler.RotateVehicle('R')
             end
         end
              
@@ -40,7 +39,7 @@ end
 
 
 
-local function SetDirectionY(behind)
+local function SetValuesFrontBehind(behind)
 
 
     OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
@@ -56,11 +55,10 @@ local function SetDirectionY(behind)
 
 end
 
-local function SetDirectionX(behind)
+local function SetValuesLeftRight(behind)
 
 
     OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
-
     OOG_Handler.currentHandler.forceCoeff = 5
 
     if behind then
@@ -73,18 +71,6 @@ local function SetDirectionX(behind)
         OOG_Handler.currentHandler.fx = -1
     end
 
-  
-    -- if (side == 'R') then
-    --     print("Rotating R")
-    --     OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-    --     OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-    --     OOG_Handler.currentHandler.fx = 1
-    -- elseif side == 'L' then
-    --     print("Rotating L")
-    --     OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-    --     OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-    --     OOG_Handler.currentHandler.fx = 1
-    -- end
 end
 
 
@@ -209,15 +195,15 @@ function OOG_Handler.UpdateVehiclePosition()
     OOG_Handler.currentHandler.forceCoeff = 20
 
     if startDir == "BEHIND" then
-        SetDirectionY(true)
+        SetValuesFrontBehind(true)
 
     elseif startDir == "FRONT" then
-        SetDirectionY(false)
+        SetValuesFrontBehind(false)
 
     elseif startDir == "RIGHT" then
-        SetDirectionX(true)
+        SetValuesLeftRight(true)
     elseif startDir == "LEFT" then
-        SetDirectionX(false)
+        SetValuesLeftRight(false)
     end
 
 
