@@ -5,40 +5,8 @@ OOG_Handler.startVehicleVector = nil
 OOG_Handler.vehicleFirstPushVector = nil
 OOG_Handler.vehicleSecondPushVector = nil
 
-function TestDirection()
 
-    Events.OnTick.Add(function()
-        --print(getPlayer():getDirectionAngle())
-    
-        local dir = getPlayer():getDirectionAngle()
-
-        local flooredDir = math.floor(dir)
-        if flooredDir == -135 then
-            print("NW")
-        elseif flooredDir == -90 then
-            print("N")
-        elseif flooredDir == -46 then
-            print("NE")
-        elseif flooredDir == 0 then
-            print("E")
-        elseif flooredDir == 45 then
-            print("SE")
-        elseif flooredDir == 89 then
-            print("S")
-        elseif flooredDir == 135 then
-            print("SW")
-        elseif flooredDir == - 180 then
-            print("W")
-        end
-    
-    
-    
-    end)
-
-end
-
-
-local function SetDirection(behind, side)
+local function SetDirectionY(behind, side)
 
 
     if side then
@@ -68,7 +36,35 @@ local function SetDirection(behind, side)
         OOG_Handler.currentHandler.fx = 1
     end
 end
+local function SetDirectionX(side)
 
+
+    OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
+
+
+
+
+    OOG_Handler.currentHandler.z = 0
+    OOG_Handler.currentHandler.fz = 0
+    OOG_Handler.currentHandler.fx = 1
+    
+    if side then
+        OOG_Handler.currentHandler.forceCoeff = 5
+    else
+        return
+    end
+    if (side == 'R') then
+        print("Rotating R")
+        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = 1
+    elseif side == 'L' then
+        print("Rotating L")
+        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = 1
+    end
+end
 
 
 local function MapDirectionToValue(inputDirection, playerDir)
@@ -93,53 +89,87 @@ local function MapDirectionToValue(inputDirection, playerDir)
     if inputDirection == "BEHIND" then
         if flooredDir == -90 then
             print("N")
-            SetDirection(true, nil)
+            SetDirectionY(true, nil)
         elseif flooredDir == -46 then
             print("NE")
-            SetDirection(true, 'R')
+            SetDirectionY(true, 'R')
         elseif flooredDir == 0 then
             print("E")
-            SetDirection(true, nil)
+            SetDirectionY(true, nil)
         elseif flooredDir == 45 then
             print("SE")
-            SetDirection(true, nil)
+            SetDirectionY(true, nil)
         elseif flooredDir == 89 then
             print("S")
-            SetDirection(true, nil)
+            SetDirectionY(true, nil)
         elseif flooredDir == 135 then
             print("SW")
-            SetDirection(true, 'L')
+            SetDirectionY(true, 'L')
         elseif flooredDir == -180 then
             print("W")
+            SetDirectionY(true, nil)
+
         elseif flooredDir == -135 then
             print("NW")
+            SetDirectionY(true, nil)
+
         end
     elseif inputDirection == "FRONT" then
         if flooredDir == -90 then
             print("N")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         elseif flooredDir == -46 then
             print("NE")
-            SetDirection(false, 'L')
+            SetDirectionY(false, 'L')
         elseif flooredDir == 0 then
             print("E")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         elseif flooredDir == 45 then
             print("SE")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         elseif flooredDir == 89 then
             print("S")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         elseif flooredDir == 135 then
             print("SW")
-            SetDirection(false, 'R')
+            SetDirectionY(false, 'R')
         elseif flooredDir == -180 then
             print("W")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         elseif flooredDir == -135 then
             print("NW")
-            SetDirection(false, nil)
+            SetDirectionY(false, nil)
         end
+    elseif inputDirection == "RIGHT" then
+
+
+        if flooredDir == -90 then
+            print("N")
+            SetDirectionX(nil)
+        elseif flooredDir == -46 then
+            print("NE")
+            SetDirectionX('L')
+        elseif flooredDir == 0 then
+            print("E")
+            SetDirectionX(nil)
+        elseif flooredDir == 45 then
+            print("SE")
+            SetDirectionX(nil)
+        elseif flooredDir == 89 then
+            print("S")
+            SetDirectionX(nil)
+        elseif flooredDir == 135 then
+            print("SW")
+            SetDirectionX('R')
+        elseif flooredDir == -180 then
+            print("W")
+            SetDirectionX(nil)
+        elseif flooredDir == -135 then
+            print("NW")
+            SetDirectionX(nil)
+        end
+    elseif inputDirection == "LEFT" then
+        
     end
 
     
@@ -156,20 +186,21 @@ end
 
 function OOG_Handler.UpdateVehiclePosition()
 
+    if OOG_Handler == nil then
+        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
+
+    end
+
     if not OOG_Handler.currentHandler.player:isPlayerMoving() then
         OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
         return
     end
+
     OOG_Handler.currentHandler.player:setVariable("EmotePlaying", true)
 
-
-
+    
     local dir = getPlayer():getDirectionAngle()
     MapDirectionToValue(OOG_Handler.currentHandler.startDirection, dir)
-
-
-
-
 
 
     -- Check distance between og point of the car and player
@@ -179,8 +210,13 @@ function OOG_Handler.UpdateVehiclePosition()
     local vehX = vehicleVector:get(0)
     local vehY = vehicleVector:get(1)
 
-    -- FIXME this check is fucked
-    if (math.abs(math.abs(plX) - math.abs(vehX)) > 1) or (math.abs(math.abs(plY) - math.abs(vehY)) > 1) then
+
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
+        return
+    end
+
+
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 1) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.7) then
         print("Stopping!")
         print("X")
         print(math.abs(math.abs(plX) - math.abs(vehX)))
@@ -235,22 +271,19 @@ function OOG_Handler:startPushingVehicle(direction)
     elseif direction == "BEHIND" then
         self.startZ = -self.halfLength
         self.startFz = 1
-    elseif direction == "LEFT_FRONT" then
-        self.startX = self.halfWidth
-        self.startZ = self.halfLength
-        self.startFx = -1
-    elseif direction == "LEFT_BEHIND" then
-        self.startX = self.halfWidth
-        self.startZ = -self.halfLength
-        self.startFx = -1
-    elseif direction == "RIGHT_FRONT" then
+    elseif direction == "LEFT" then
         self.startX = -self.halfWidth
         self.startZ = self.halfLength
-        self.startFx = 1
-    elseif direction == "RIGHT_BEHIND" then
+        self.startFx = -1
+    elseif direction == "RIGHT" then
         self.startX = -self.halfWidth
-        self.startZ = -self.halfLength
+        self.startZ = 0
         self.startFx = 1
+
+        print(self.startX)
+        print(self.startZ)
+        print(self.startFx)
+
     end
 
 
