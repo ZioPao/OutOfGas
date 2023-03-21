@@ -6,7 +6,7 @@ local function HandlePushOption(_, direction)
 end
 
 
-local function AddOptionPushVehicle(oogHandler, playerObj, context)
+local function AddOptionPushVehicle(playerObj, context)
 
     local pushOption = context:addOption(getText("UI_Text_PushByHands"))
     local subMenuMain = context:getNew(context)

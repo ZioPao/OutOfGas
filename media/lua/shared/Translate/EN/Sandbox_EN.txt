@@ -1,0 +1,5 @@
+Sandbox_EN = {
+    Sandbox_OOG = "Out Of Gas?",
+
+    Sandbox_OOG_EnduranceMalus = "Endurance malus during pushing",
+}

@@ -5,8 +5,8 @@ if not OOG_Handler then OOG_Handler = {} end
 
 local function SetValuesFrontBehind(behind)
 
-
     OOG_Handler.player:playEmote("WalkPushCar")
+    OOG_Handler.forceCoeff = 15
 
 
     if behind then
@@ -38,25 +38,24 @@ local function SetValuesLeftRight(behind)
 end
 
 local function RotateVehicle(side)
-    OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
-    OOG_Handler.currentHandler.forceCoeff = 8
-    OOG_Handler.currentHandler.rotating = true
+    OOG_Handler.player:playEmote("WalkPushCarSide")
+    OOG_Handler.forceCoeff = 8
+    OOG_Handler.rotating = true
     if side == 'R' then
-        print("Rotate R")
-        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = -1
+        OOG_Handler.x = OOG_Handler.halfWidth
+        OOG_Handler.z = OOG_Handler.halfLength
+        OOG_Handler.fx = -1
     else
-        print("Rotate L")
-        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = -1
+        OOG_Handler.x = -OOG_Handler.halfWidth
+        OOG_Handler.z = -OOG_Handler.halfLength
+        OOG_Handler.fx = -1
     end
 
 end
 
 
 local function ExecImpulse()
+    --print("OOG: impulse!")
     local forceVector = OOG_Handler.vehicle:getWorldPos(OOG_Handler.fx, 0, OOG_Handler.fz, OOG_Handler.vehicleFirstPushVector):add(-OOG_Handler.vehicle:getX(), -OOG_Handler.vehicle:getY(), -OOG_Handler.vehicle:getZ())
 
     local pushPoint = OOG_Handler.vehicle:getWorldPos(OOG_Handler.x, 0, OOG_Handler.z, OOG_Handler.vehicleSecondPushVector):add(-OOG_Handler.vehicle:getX(), -OOG_Handler.vehicle:getY(), -OOG_Handler.vehicle:getZ())
@@ -66,10 +65,14 @@ local function ExecImpulse()
     forceVector:mul(OOG_Handler.forceCoeff * force * OOG_Handler.vehicle:getMass())
     forceVector:set(forceVector:x(), 0, forceVector:y())
 
+
+
     OOG_Handler.vehicle:setPhysicsActive(true)
 
     if OOG_Handler.vehicle:getSpeed2D() < 1 then
         OOG_Handler.vehicle:addImpulse(forceVector, pushPoint)
+        OOG_Handler.player:getStats():setEndurance(OOG_Handler.player:getStats():getEndurance() - SandboxVars.OOG.EnduranceMalus)
+
     end
 
 end
@@ -81,7 +84,6 @@ end
 
 
 OOG_Handler.ManageKeys = function(key)
-    print("OOG: managing keys!")
 
     for _,bind in ipairs(OOG_Bindings) do
         if key == getCore():getKey(bind.value) then
@@ -103,6 +105,8 @@ end
 
 
 OOG_Handler.UpdateVehiclePosition = function()
+    --print("OOG: main loop")
+
     getPlayer():setAllowSprint(false)
     getPlayer():setAllowRun(false)
 
@@ -154,9 +158,6 @@ OOG_Handler.UpdateVehiclePosition = function()
     -- Not too high 
 
     local startDir = OOG_Handler.startDirection
-
-    OOG_Handler.forceCoeff = 20
-
     if startDir == "BEHIND" then
         SetValuesFrontBehind(true)
 
@@ -184,45 +185,49 @@ OOG_Handler.StopAllLoops = function()
 end
 
 OOG_Handler.StartUpdateVehiclePosition = function()
+    print("OOG: Starting loops!")
     Events.OnKeyKeepPressed.Add(OOG_Handler.ManageKeys)
     Events.OnTick.Add(OOG_Handler.UpdateVehiclePosition)
 end
 
 OOG_Handler.StartPushingVehicle = function(direction)
 
+
+    OOG_Handler.startDirection = direction
+
     OOG_Handler.halfLength = OOG_Handler.vehicle:getScript():getPhysicsChassisShape():z()/2
     OOG_Handler.halfWidth = OOG_Handler.vehicle:getScript():getPhysicsChassisShape():x()/2
 
      -- We need to account for the starting point!
-     OOG_Handler.startZ = 0
-     OOG_Handler.startX = 0
-     OOG_Handler.startFx = 0
-     OOG_Handler.startFz = 0
- 
-     if direction == "FRONT" then
-        OOG_Handler.startZ = OOG_Handler.halfLength
-        OOG_Handler.startFz = -1
-     elseif direction == "BEHIND" then
-        OOG_Handler.startZ = -OOG_Handler.halfLength
-        OOG_Handler.startFz = 1
-     elseif direction == "LEFT" then
-        OOG_Handler.startX = OOG_Handler.halfWidth
-        OOG_Handler.startZ = 0
-        OOG_Handler.startFx = -1
-     elseif direction == "RIGHT" then
-        OOG_Handler.startX = -OOG_Handler.halfWidth
-        OOG_Handler.startZ = 0
-        OOG_Handler.startFx = 1
-     end
- 
- 
-     OOG_Handler.vehicleFirstPushVector = Vector3f.new()
-     OOG_Handler.vehicleSecondPushVector = Vector3f.new()
-     OOG_Handler.startVehicleVector = Vector3f.new()
- 
-     local pushPoint = OOG_Handler.vehicle:getWorldPos(OOG_Handler.startX, 0, OOG_Handler.startZ, OOG_Handler.vehicleFirstPushVector)
-     ISTimedActionQueue.add(ISPathFindAction:customPathToVehicle(OOG_Handler.player, pushPoint:x(), pushPoint:y(), pushPoint:z(), OOG_Handler.StartUpdateVehiclePosition))
- 
+    OOG_Handler.startZ = 0
+    OOG_Handler.startX = 0
+    OOG_Handler.startFx = 0
+    OOG_Handler.startFz = 0
+
+    if direction == "FRONT" then
+    OOG_Handler.startZ = OOG_Handler.halfLength
+    OOG_Handler.startFz = -1
+    elseif direction == "BEHIND" then
+    OOG_Handler.startZ = -OOG_Handler.halfLength
+    OOG_Handler.startFz = 1
+    elseif direction == "LEFT" then
+    OOG_Handler.startX = OOG_Handler.halfWidth
+    OOG_Handler.startZ = 0
+    OOG_Handler.startFx = -1
+    elseif direction == "RIGHT" then
+    OOG_Handler.startX = -OOG_Handler.halfWidth
+    OOG_Handler.startZ = 0
+    OOG_Handler.startFx = 1
+    end
+
+
+    OOG_Handler.vehicleFirstPushVector = Vector3f.new()
+    OOG_Handler.vehicleSecondPushVector = Vector3f.new()
+    OOG_Handler.startVehicleVector = Vector3f.new()
+
+    local pushPoint = OOG_Handler.vehicle:getWorldPos(OOG_Handler.startX, 0, OOG_Handler.startZ, OOG_Handler.vehicleFirstPushVector)
+    ISTimedActionQueue.add(ISPathFindAction:customPathToVehicle(OOG_Handler.player, pushPoint:x(), pushPoint:y(), pushPoint:z(), OOG_Handler.StartUpdateVehiclePosition))
+
 end
 
 OOG_Handler.Setup = function(player, vehicle)

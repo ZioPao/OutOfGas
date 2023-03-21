@@ -1,0 +1,11 @@
+VERSION = 1,
+
+option OOG.EnduranceMalus
+{
+    type = double,
+    min = 0,
+    max = 0.01,
+    default = 0.0002,
+    page = OOG,
+    translation = OOG_EnduranceMalus,
+}
