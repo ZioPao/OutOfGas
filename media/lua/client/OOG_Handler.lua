@@ -12,14 +12,17 @@ OOG_Handler.vehicleSecondPushVector = nil
 
 
 OOG_Handler.ManageKeys = function(key)
+    print("OOG: managing keys!")
 
     for _,bind in ipairs(OOG_Bindings) do
         if key == getCore():getKey(bind.value) then
 
 
             if bind.value == "OOG_LeftKey" then
+                OOG_Handler.currentHandler.RotateVehicle('L')
                 
             elseif bind.value == "OOG_RightKey" then
+                OOG_Handler.currentHandler.RotateVehicle('R')
 
             end
         end
@@ -37,245 +40,100 @@ end
 
 
 
-local function SetDirectionY(behind, side)
+local function SetDirectionY(behind)
 
 
-    if side then
-        OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
-        OOG_Handler.currentHandler.forceCoeff = 5
-    else
-        OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
-    end
+    OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
 
 
-    if behind and not side then
+    if behind then
         OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
         OOG_Handler.currentHandler.fz = 1
-    elseif not behind and not side then
+    else
         OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
         OOG_Handler.currentHandler.fz = -1
-    
-    elseif (behind and side == 'R') or (not behind and side =='L') then
-        print("Rotating 1")
-        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = -1
-    elseif (behind and side == 'L') or (not behind and side == 'R') then
-        print("Rotating 2")
-        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = -1
     end
+
 end
-local function SetDirectionX(side)
+
+local function SetDirectionX(behind)
 
 
-    OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
+    OOG_Handler.currentHandler.player:playEmote("WalkPushCar")
 
+    OOG_Handler.currentHandler.forceCoeff = 5
 
-
-
-    OOG_Handler.currentHandler.z = 0
-    OOG_Handler.currentHandler.fz = 0
-    OOG_Handler.currentHandler.fx = 1
-    
-    if side then
-        OOG_Handler.currentHandler.forceCoeff = 5
+    if behind then
+        OOG_Handler.currentHandler.z = 0
+        OOG_Handler.currentHandler.fz = 0
+        OOG_Handler.currentHandler.fx = 1
     else
-        return
+        OOG_Handler.currentHandler.z = 0
+        OOG_Handler.currentHandler.fz = 0
+        OOG_Handler.currentHandler.fx = -1
     end
-    if (side == 'R') then
-        print("Rotating R")
-        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = 1
-    elseif side == 'L' then
-        print("Rotating L")
-        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
-        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
-        OOG_Handler.currentHandler.fx = 1
-    end
+
+  
+    -- if (side == 'R') then
+    --     print("Rotating R")
+    --     OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
+    --     OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
+    --     OOG_Handler.currentHandler.fx = 1
+    -- elseif side == 'L' then
+    --     print("Rotating L")
+    --     OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
+    --     OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
+    --     OOG_Handler.currentHandler.fx = 1
+    -- end
 end
 
-
-local function MapDirectionToValue(inputDirection, playerDir)
-
-    -- N = 0
-    -- NE = 1
-    -- E = 2
-    -- SE = 3
-    -- S = 4
-    -- SW = 5
-    -- W = 6
-    -- NW = 7
-    local flooredDir = math.floor(playerDir)
-
-    OOG_Handler.currentHandler.z = 0
-    OOG_Handler.currentHandler.x = 0
-    OOG_Handler.currentHandler.fx = 0
-    OOG_Handler.currentHandler.fz = 0
-    -- Not too high 
-    OOG_Handler.currentHandler.forceCoeff = 20
-
-    if inputDirection == "BEHIND" then
-        if flooredDir == -90 then
-            print("N")
-            SetDirectionY(true, nil)
-        elseif flooredDir == -46 then
-            print("NE")
-            SetDirectionY(true, 'R')
-        elseif flooredDir == 0 then
-            print("E")
-            SetDirectionY(true, nil)
-        elseif flooredDir == 45 then
-            print("SE")
-            SetDirectionY(true, nil)
-        elseif flooredDir == 89 then
-            print("S")
-            SetDirectionY(true, nil)
-        elseif flooredDir == 135 then
-            print("SW")
-            SetDirectionY(true, 'L')
-        elseif flooredDir == -180 then
-            print("W")
-            SetDirectionY(true, nil)
-
-        elseif flooredDir == -135 then
-            print("NW")
-            SetDirectionY(true, nil)
-
-        end
-    elseif inputDirection == "FRONT" then
-        if flooredDir == -90 then
-            print("N")
-            SetDirectionY(false, nil)
-        elseif flooredDir == -46 then
-            print("NE")
-            SetDirectionY(false, 'L')
-        elseif flooredDir == 0 then
-            print("E")
-            SetDirectionY(false, nil)
-        elseif flooredDir == 45 then
-            print("SE")
-            SetDirectionY(false, nil)
-        elseif flooredDir == 89 then
-            print("S")
-            SetDirectionY(false, nil)
-        elseif flooredDir == 135 then
-            print("SW")
-            SetDirectionY(false, 'R')
-        elseif flooredDir == -180 then
-            print("W")
-            SetDirectionY(false, nil)
-        elseif flooredDir == -135 then
-            print("NW")
-            SetDirectionY(false, nil)
-        end
-    elseif inputDirection == "RIGHT" then
-
-
-        if flooredDir == -90 then
-            print("N")
-            SetDirectionX(nil)
-        elseif flooredDir == -46 then
-            print("NE")
-            SetDirectionX('L')
-        elseif flooredDir == 0 then
-            print("E")
-            SetDirectionX(nil)
-        elseif flooredDir == 45 then
-            print("SE")
-            SetDirectionX(nil)
-        elseif flooredDir == 89 then
-            print("S")
-            SetDirectionX(nil)
-        elseif flooredDir == 135 then
-            print("SW")
-            SetDirectionX('R')
-        elseif flooredDir == -180 then
-            print("W")
-            SetDirectionX(nil)
-        elseif flooredDir == -135 then
-            print("NW")
-            SetDirectionX(nil)
-        end
-    elseif inputDirection == "LEFT" then
-        
-    end
-
-    
-
-end
 
 
 
 
 function OOG_Handler.RotateVehicle(side)
-
+    OOG_Handler.currentHandler.player:playEmote("WalkPushCarSide")
+    OOG_Handler.currentHandler.forceCoeff = 8
+    OOG_Handler.currentHandler.rotating = true
     if side == 'R' then
         print("Rotate R")
+        OOG_Handler.currentHandler.x = OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = -1
     else
         print("Rotate L")
+        OOG_Handler.currentHandler.x = -OOG_Handler.currentHandler.halfWidth
+        OOG_Handler.currentHandler.z = -OOG_Handler.currentHandler.halfLength
+        OOG_Handler.currentHandler.fx = -1
     end
+
+
+
+
+
+end
+
+
+
+
+function OOG_Handler.StopAllLoops()
+    Events.OnKeyKeepPressed.Remove(OOG_Handler.ManageKeys)
+    Events.OnTick.Remove(OOG_Handler.UpdateVehiclePosition)
+
 
 end
 
 
 
 function OOG_Handler.StartUpdateVehiclePosition()
-    
-    Events.OnKeyPressed.Add(OOG_Bindings.ManageKeys)
+    Events.OnKeyKeepPressed.Add(OOG_Handler.ManageKeys)
     Events.OnTick.Add(OOG_Handler.UpdateVehiclePosition)
 end
 
-function OOG_Handler.UpdateVehiclePosition()
-
-    if OOG_Handler == nil then
-        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
-        Events.OnKeyPressed.Remove(OOG_Bindings.ManageKeys)
-
-    end
-
-    if not OOG_Handler.currentHandler.player:isPlayerMoving() then
-        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
-        return
-    end
-
-    OOG_Handler.currentHandler.player:setVariable("EmotePlaying", true)
-
-    
-    local dir = getPlayer():getDirectionAngle()
-    MapDirectionToValue(OOG_Handler.currentHandler.startDirection, dir)
-
-
-    -- Check distance between og point of the car and player
-    local vehicleVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.startX, 0, OOG_Handler.currentHandler.startZ, OOG_Handler.startVehicleVector)
-    local plX = OOG_Handler.currentHandler.player:getX()
-    local plY = OOG_Handler.currentHandler.player:getY()
-    local vehX = vehicleVector:get(0)
-    local vehY = vehicleVector:get(1)
 
 
 
-
-
-    if (math.abs(math.abs(plX) - math.abs(vehX)) > 3) or (math.abs(math.abs(plY) - math.abs(vehY)) > 3) then
-        print("Stopping!")
-        print("X")
-        print(math.abs(math.abs(plX) - math.abs(vehX)))
-        print("Y")
-        print(math.abs(math.abs(plY) - math.abs(vehY)))
-        print("__________________")
-        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
-        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
-        Events.OnKeyPressed.Remove(OOG_Bindings.ManageKeys)
-        return
-    end
-
-    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
-        return
-    end
-
+local function ExecImpulse()
     local forceVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.fx, 0, OOG_Handler.currentHandler.fz, OOG_Handler.vehicleFirstPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
 
     local pushPoint = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.x, 0, OOG_Handler.currentHandler.z, OOG_Handler.vehicleSecondPushVector):add(-OOG_Handler.currentHandler.vehicle:getX(), -OOG_Handler.currentHandler.vehicle:getY(), -OOG_Handler.currentHandler.vehicle:getZ())
@@ -293,6 +151,83 @@ function OOG_Handler.UpdateVehiclePosition()
 
 end
 
+function OOG_Handler.UpdateVehiclePosition()
+
+    getPlayer():setAllowSprint(false)
+    getPlayer():setAllowRun(false)
+
+
+
+    -- Check distance between og point of the car and player
+    local vehicleVector = OOG_Handler.currentHandler.vehicle:getWorldPos(OOG_Handler.currentHandler.startX, 0, OOG_Handler.currentHandler.startZ, OOG_Handler.startVehicleVector)
+    local plX = OOG_Handler.currentHandler.player:getX()
+    local plY = OOG_Handler.currentHandler.player:getY()
+    local vehX = vehicleVector:get(0)
+    local vehY = vehicleVector:get(1)
+    
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 1.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 1.5) then
+        print("Stopping!")
+        print("X")
+        print(math.abs(math.abs(plX) - math.abs(vehX)))
+        print("Y")
+        print(math.abs(math.abs(plY) - math.abs(vehY)))
+        print("__________________")
+        Events.OnTick.Remove(OOG_Handler.currentHandler.UpdateVehiclePosition)
+        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
+        Events.OnKeyKeepPressed.Remove(OOG_Handler.ManageKeys)
+        getPlayer():setAllowSprint(true)
+        getPlayer():setAllowRun(true)
+        return
+    end
+
+    if (math.abs(math.abs(plX) - math.abs(vehX)) > 0.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 0.5) then
+        getPlayer():setAllowSprint(true)
+        getPlayer():setAllowRun(true)
+        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
+        return
+    end
+
+    if not OOG_Handler.currentHandler.player:isPlayerMoving() then
+        OOG_Handler.currentHandler.player:setVariable("EmotePlaying", false)
+        return
+    elseif OOG_Handler.currentHandler.rotating then
+        ExecImpulse()
+        OOG_Handler.currentHandler.rotating = false
+    end
+
+    OOG_Handler.currentHandler.player:setVariable("EmotePlaying", true)
+
+
+    OOG_Handler.currentHandler.z = 0
+    OOG_Handler.currentHandler.x = 0
+    OOG_Handler.currentHandler.fx = 0
+    OOG_Handler.currentHandler.fz = 0
+    -- Not too high 
+
+    local startDir = OOG_Handler.currentHandler.startDirection
+
+    OOG_Handler.currentHandler.forceCoeff = 20
+
+    if startDir == "BEHIND" then
+        SetDirectionY(true)
+
+    elseif startDir == "FRONT" then
+        SetDirectionY(false)
+
+    elseif startDir == "RIGHT" then
+        SetDirectionX(true)
+    elseif startDir == "LEFT" then
+        SetDirectionX(false)
+    end
+
+
+
+
+
+    ExecImpulse()
+
+end
+
 function OOG_Handler:startPushingVehicle(direction)
 
 
@@ -302,9 +237,6 @@ function OOG_Handler:startPushingVehicle(direction)
     self.halfWidth = self.vehicle:getScript():getPhysicsChassisShape():x()/2
 
     -- We need to account for the starting point!
-
-
-
     self.startZ = 0
     self.startX = 0
     self.startFx = 0
@@ -317,8 +249,8 @@ function OOG_Handler:startPushingVehicle(direction)
         self.startZ = -self.halfLength
         self.startFz = 1
     elseif direction == "LEFT" then
-        self.startX = -self.halfWidth
-        self.startZ = self.halfLength
+        self.startX = self.halfWidth
+        self.startZ = 0
         self.startFx = -1
     elseif direction == "RIGHT" then
         self.startX = -self.halfWidth
