@@ -39,9 +39,11 @@ function ISVehicleMenu.FillMenuOutsideVehicle(player, context, vehicle, test)
 
     local oogHandler = OOG_Handler.GetInstance()
 
-    if oogHandler == nil then
-        oogHandler = OOG_Handler:new(playerObj, vehicle)
-        AddOptionPushVehicle(oogHandler, playerObj, context)
+    if oogHandler ~= nil then
+        OOG_Handler.currentHandler = nil
     end
+
+    oogHandler = OOG_Handler:new(playerObj, vehicle)
+    AddOptionPushVehicle(oogHandler, playerObj, context)
 
 end
