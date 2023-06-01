@@ -15,4 +15,8 @@ UI_Text_PushByHands_Right = "Right",
 UI_Text_PushByHands_Front = "Front",
 UI_Text_PushByHands_Behind = "Behind",
 
+
+UI_optionscreen_binding_OOG_LeftKey = "Push Left",
+UI_optionscreen_binding_OOG_RightKey = "Push Right",
+
 }

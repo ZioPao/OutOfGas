@@ -17,6 +17,9 @@ local function SetValuesFrontBehind(behind)
         OOG_Handler.fz = -1
     end
 
+
+    
+
 end
 
 local function SetValuesLeftRight(behind)
@@ -38,8 +41,15 @@ local function SetValuesLeftRight(behind)
 end
 
 local function RotateVehicle(side)
+    --print("Rotating")
     OOG_Handler.player:playEmote("WalkPushCarSide")
-    OOG_Handler.forceCoeff = 8
+
+    -- TODO Test this
+    if OOG_Handler.startDirection == "RIGHT" or OOG_Handler.startDirection == "LEFT" then
+        OOG_Handler.forceCoeff = 5
+    else
+        OOG_Handler.forceCoeff = 15
+    end
     OOG_Handler.rotating = true
     if side == 'R' then
         OOG_Handler.x = OOG_Handler.halfWidth
@@ -50,7 +60,6 @@ local function RotateVehicle(side)
         OOG_Handler.z = -OOG_Handler.halfLength
         OOG_Handler.fx = -1
     end
-
 end
 
 
@@ -119,12 +128,12 @@ OOG_Handler.UpdateVehiclePosition = function()
     local vehY = vehicleVector:get(1)
     
     if (math.abs(math.abs(plX) - math.abs(vehX)) > 1.5) or (math.abs(math.abs(plY) - math.abs(vehY)) > 1.5) then
-        print("Stopping!")
-        print("X")
-        print(math.abs(math.abs(plX) - math.abs(vehX)))
-        print("Y")
-        print(math.abs(math.abs(plY) - math.abs(vehY)))
-        print("__________________")
+        --print("Stopping!")
+        --print("X")
+        --print(math.abs(math.abs(plX) - math.abs(vehX)))
+        --print("Y")
+        --print(math.abs(math.abs(plY) - math.abs(vehY)))
+        --print("__________________")
         Events.OnTick.Remove(OOG_Handler.UpdateVehiclePosition)
         OOG_Handler.player:setVariable("EmotePlaying", false)
         Events.OnKeyKeepPressed.Remove(OOG_Handler.ManageKeys)
@@ -170,10 +179,6 @@ OOG_Handler.UpdateVehiclePosition = function()
         SetValuesLeftRight(false)
     end
 
-
-
-
-
     ExecImpulse()
 
 end
@@ -185,7 +190,7 @@ OOG_Handler.StopAllLoops = function()
 end
 
 OOG_Handler.StartUpdateVehiclePosition = function()
-    print("OOG: Starting loops!")
+    --print("OOG: Starting loops!")
     Events.OnKeyKeepPressed.Add(OOG_Handler.ManageKeys)
     Events.OnTick.Add(OOG_Handler.UpdateVehiclePosition)
 end

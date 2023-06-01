@@ -1,6 +1,3 @@
-
-
-
 OOG_Bindings = {
     {
         name = '[OutOfGas]'
@@ -20,10 +17,7 @@ OOG_Bindings = {
 
 
 local function InitKeybinds()
-
     if isServer() then return end
-
-    
     for _, bind in ipairs(OOG_Bindings) do
         if bind.name then
             table.insert(keyBinding, { value = bind.name, key = nil })
@@ -33,8 +27,6 @@ local function InitKeybinds()
             end
         end
     end
-
-    
 end
 
 
