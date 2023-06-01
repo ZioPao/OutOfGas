@@ -80,7 +80,8 @@ local function ExecImpulse()
 
     if OOG_Handler.vehicle:getSpeed2D() < 1 then
         OOG_Handler.vehicle:addImpulse(forceVector, pushPoint)
-        OOG_Handler.player:getStats():setEndurance(OOG_Handler.player:getStats():getEndurance() - SandboxVars.OOG.EnduranceMalus)
+        local enduranceMalus = SandboxVars.OOG.EnduranceMalus/1000
+        OOG_Handler.player:getStats():setEndurance(OOG_Handler.player:getStats():getEndurance() - enduranceMalus)
 
     end
 

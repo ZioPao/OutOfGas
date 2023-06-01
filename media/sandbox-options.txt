@@ -4,8 +4,8 @@ option OOG.EnduranceMalus
 {
     type = double,
     min = 0,
-    max = 0.01,
-    default = 0.0002,
+    max = 5,
+    default = 0.2,
     page = OOG,
     translation = OOG_EnduranceMalus,
 }
