@@ -1,0 +1,20 @@
+version=1
+id=2950365652
+title=Out of Gas?
+description=[h1]Compatible ONLY with SP[/h1]
+description=Is your car out of gas and you're in a sticky situation? Fear not, push your car away from that mess!
+description=
+description=[h2]Tutorial[/h2]
+description=[olist]
+description=[*] Right click on a car and select the direction you want to push it from
+description=[*] Rotate the car left of right by using numpad 1 or numpad 2 (rebindable from the options menu)
+description=[*] Puuuuuuush
+description=[/olist]
+description=
+description=Commissioned by [b]Seddows[/b] 
+description=[url=https://discord.gg/2skchrKrDv][img]https://raw.githubusercontent.com/Glytch3r/TeamOrbitAds/main/square_serve.gif[/img][/url]
+description=[url=https://steamcommunity.com/id/glytch3r/myworkshopfiles/?section=collections&appid=108600][img]https://raw.githubusercontent.com/Glytch3r/TeamOrbitAds/main/workshop.png[/img][/url]
+description=
+description=[hr]
+tags=Build 41;Balance;Misc;Realistic;Silly/Fun;Vehicles
+visibility=public
