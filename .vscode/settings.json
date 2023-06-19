@@ -53,21 +53,9 @@
         "FHSwapHandsAction",
         "getClassFieldVal",
         "SandboxVars",
-        "getClassField",
-        "ISWearClothing",
-        "sledgeDestroy",
-        "IsoObject",
-        "ISContextMenu",
-        "Keyboard",
-        "keyBinding",
-        "addSound",
-        "getSoundManager",
-        "timer",
-        "SendCommandToServer",
-        "getModFileReader",
-        "getTextOrNull",
-        "Vector3f",
-        "ISPathFindAction",
-        "ISVehicleMenu"
-    ]
+        "getClassField"
+    ],
+
+    "zomboid_user_folder": "C:/Users/picch/Zomboid",
+    "zomboid_folder": "E:\\Steam\\steamapps\\common\\ProjectZomboid",
 }
